@@ -101,7 +101,7 @@ search-input a.erase-input:hover{
 
 .super-input {
 	display:	inline-block;
-	max-height:	2.5em;
+	height:		4em;
 }
 .super-input label {
 	width:		auto;
