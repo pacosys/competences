@@ -44,8 +44,8 @@
 				<a href ng-click="tab.setTab(3)">Évaluations</a>
 			</li>
 		</ul>
-		<!--<div ng-show="tab.isSet(1)" class="nav-tab wrapper">-->
 		<div style="display:flex">
+			<!--<div ng-show="tab.isSet(1)" class="nav-tab wrapper">-->
 			<div ng-class="{active :tab.isSet(1)}" class="nav-tab wrapper">
 				<p>This is a student controller</p>
 				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#students-container')"></search-input>
@@ -57,7 +57,6 @@
 					</div>
 				</div>
 			</div>
-			<!--<div ng-show="tab.isSet(2)" class="nav-tab">-->
 			<div ng-class="{active :tab.isSet(2)}" class="nav-tab wrapper">
 				<p>This is a competence controller</p>
 				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#competences-container')"></search-input>
@@ -69,7 +68,7 @@
 					</div>
 				</div>
 			</div>
-			<div ng-show="tab.isSet(3)" class="nav-tab">
+			<div ng-class="{active :tab.isSet(2)}" class="nav-tab wrapper">
 				<p>This is a evaluation controller</p>
 				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#evaluations-container')"></search-input>
 				<div class="list-container" id="evaluations-container">
