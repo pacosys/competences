@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="fr-fr">
+<html lang="fr-fr" ng-app="competences">
 <head>
 	<title>Compétences</title>
 	<meta charset="UTF-8">
@@ -10,20 +10,143 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Expires" content="0" />
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<!-- Puls optional themes -->
+	<!-- 
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	-->
+	<!-- Angular material CSS -->
+	<link rel="stylesheet" href="https://material.angularjs.org/latest/angular-material.min.css">
 	<link rel="stylesheet" href="css/competences.css" type="text/css"/>
 	<link rel="stylesheet" href="css/onoffswitch.css" type="text/css"/>
 </head>
-<body>
+<!--<body ng-controller="CompetencesController as competences">-->
+<body ng-controller="SchoolController as school">
 	<!-- CDN pour jQuery des serveurs de Google -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 	<script src="js/competences.app.js"></script>
-	<div>
-		<div>
-			
+
+
+	<h1>Competences</h1>
+	<div id="quick-menu">
+	</div>
+
+	<div ng-controller="TabController as tab" class="list-frame">
+		<ul class="nav nav-pills">
+			<li ng-class="{active: tab.isSet(1) }">
+				<a href ng-click="tab.setTab(1)">Élèves</a>
+			</li>
+			<li ng-class="{active: tab.isSet(2) }">
+				<a href ng-click="tab.setTab(2)">Competences</a>
+			</li>
+			<li ng-class="{active: tab.isSet(3) }">
+				<a href ng-click="tab.setTab(3)">Évaluations</a>
+			</li>
+		</ul>
+		<!--<div ng-show="tab.isSet(1)" class="nav-tab wrapper">-->
+		<div style="display:flex">
+			<div ng-class="{active :tab.isSet(1)}" class="nav-tab wrapper">
+				<p>This is a student controller</p>
+				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#students-container')"></search-input>
+				<div class="list-container" id="students-container">
+					<div ng-repeat="student in school.students" class="list-element">
+						<span ng-click="school.selectStudent(student)" title="{{student.name}} {{student.firstname}} en {{student.class}} est né {{student.birthdate}}">
+							{{student.firstname}} {{student.name}} né<span ng-show="{{student.sex === 'F'}}">e</span> le {{student.birthdate}} est en {{student.class}}
+						</span>
+					</div>
+				</div>
+			</div>
+			<!--<div ng-show="tab.isSet(2)" class="nav-tab">-->
+			<div ng-class="{active :tab.isSet(2)}" class="nav-tab wrapper">
+				<p>This is a competence controller</p>
+				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#competences-container')"></search-input>
+				<div class="list-container" id="competences-container">
+					<div ng-repeat="competence in school.competences" class="list-element">
+						<span ng-click="school.selectCompetence(competence)" title="{{competence.name}} en {{competence.level}} in @{{competence.directory}}">
+							{{competence.name}} <i>&gt;@{{competence.directory}}</i> en {{competence.level}}
+						</span>
+					</div>
+				</div>
+			</div>
+			<div ng-show="tab.isSet(3)" class="nav-tab">
+				<p>This is a evaluation controller</p>
+				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#evaluations-container')"></search-input>
+				<div class="list-container" id="evaluations-container">
+					<div ng-repeat="eval in school.evaluations" class="list-element">
+						<span ng-click="school.selectEvaluation(eval)" title="{{eval.name}} pour les {{eval.class}} le {{eval.weekDay}}, {{eval.date}}">
+							{{eval.name}} pour les {{eval.class}} le {{eval.weekDay}} {{eval.date}}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="school-lists">
+		<div  popup ng-show="school.isPopup('student')">
+			<div class="container">
+				<h3>Élève</h3>
+				<form novalidate>
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="firstname">Prénom</label>  
+						<input name="firstname" placeholder="Prénom" class="input-md col-md4" type="text" value="{{school.currentStudent.firstname}}"/>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="name">Nom</label>  
+						<input name="name" placeholder="Prénom" class="input-md col-md4 control-input" type="text" value="{{school.currentStudent.name}}"/>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="birthdate">Date de naissance</label>  
+						<input name="birthdate" placeholder="Date" class="input-md col-md4" type="text" value="{{school.currentStudent.birthdate}}"/>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="firstname">Classe</label>  
+						<input name="class" placeholder="Classe" class="input-md col-md4" type="text" value="{{school.currentStudent.class}}"/>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="firstname">Groupes</label>  
+						<input name="groups" placeholder="A dp espagnol" class="input-md col-md4" type="text" value="{{school.currentStudent.groups}}"/>
+					</div>
+					<input type="submit" value="Enregistrer"/>
+					<button ng-click="school.setPopup(0)">Fermer</button>
+				</form>
+			</div>
+		</div>
+		<div  popup ng-show="school.isPopup('competence')">
+			<div class="container">
+				<h3>Élève</h3>
+				<form>
+					<label>Nom :
+						<input type="text" value="{{school.currentCompetence.name}}"/>
+					</label>
+					<label>Niveau :
+						<input type="text" value="{{school.currentCompetence.level}}"/>
+					</label>
+					<label>Matiere :
+						<input type="text" value="{{school.currentCompetence.subject}}"/>
+					</label>
+					<button ng-click="school.setPopup(0)">Fermer</button>
+				</form>
+			</div>
+		</div>
+		<div  popup ng-show="school.isPopup('evaluation')">
+			<div class="container">
+				<h3>Élève</h3>
+				<form>
+					<label>Nom :
+						<input type="text" value="{{school.currentEvaluation.name}}"/>
+					</label>
+					<label>Classe :
+						<input type="text" value="{{school.currentEvaluation.class}}"/>
+					</label>
+					<label>Date :
+						<input type="text" value="{{school.currentEvaluation.date}}"/>
+					</label>
+					<button ng-click="school.setPopup(0)">Fermer</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>

@@ -1,0 +1,12 @@
+<div ng-form>
+	<p class="erase">The search target is «{{search.searchTarget}}»<br/>
+	The search terms are «{{search.searchTerms}}»</p>
+	<div class="super-input">
+		<label for="search-input" onclick="this.nextSibling.focus()"></label><br/>
+		<input name="search-input" type="search" search-target="{{search.searchTarget}}" value="" ng-model="search.searchTerms" ng-change="search.doSearch()" onfocus="this.parentElement.classList.add('input-focused')" onblur="this.parentElement.classList.remove('input-focused')" />
+		<a class="erase-input" ng-click="search.resetSearch()">&times;</a>
+	</div>
+	<span style="float:right;">( {{search.numberOfElementsFound}} )</span>
+	<button type="submit" class="erase">Submit</button>
+</div>
+
