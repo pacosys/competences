@@ -60,9 +60,14 @@ var recherche = function(evt){
 }
 var searchItemsIn = function(text){
 	var target = this;
-	var elements = target.querySelectorAll(target.getAttribute("myElements")||"div, .list-elements");
+	//Si aucune information n'est donnée sur la nature des éléments à rechercher, on teste les éléments de classe « list-elements »
+	var elements = target.querySelectorAll(target.getAttribute("my-elements")||".list-elements");
+	//Si aucun élément de classe « list-elements », on recherche tous les « div ».
+	if(!elements)
+		elements = target.querySelectorAll("div");
 	var boolShowItem=true, alt=true, erase=true, classHidden="erase", sText, number=0;
-	searchArray  = noAccent2LowerCase(text).split(' ');
+	//On découpe la chaine des termes de recherche en mots pour chercher l'occurence de chacun.
+	var searchArray  = noAccent2LowerCase(text).split(' ');
 	for(var i=0; i<elements.length;++i){
 		e = elements[i];
 		boolShowItem=true;
@@ -83,6 +88,7 @@ var searchItemsIn = function(text){
 		//Enfin on affiche l'élément s'il est retenu
 		if(boolShowItem){
 			e.classList.remove(classHidden);
+			//On compte le nombre d'objets et on « alterne »
 			number++;
 			alt=!alt;
 			e.setAttribute("alt",alt);
@@ -111,6 +117,8 @@ var app = angular.module('competences',[]);
 	});
 	app.controller('SchoolController',function(){
 	//Students and competences
+		this.schoolName = "DELATTRE";
+		this.directorName = "Dirlo";
 		this.competences = Competences;
 		this.students = Students;
 		this.evaluations = Evaluations;
@@ -181,6 +189,33 @@ var app = angular.module('competences',[]);
 		/*this.$watch("searchTerms",function(){
 			alert("searchTerms a changé pour "+this.searchTarget);
 		});*/
+	});
+
+	/*app.directive("labelInput",function(){
+		return {
+			restrict:'E',
+			templateUrl:'html-templates/label-input.html',
+			controller:function(){
+				this.label = "LABEL";
+				this.setLabel = function(label){
+					this.label = label || "LABEL";
+				};
+			},
+			controllerAs:'input'
+		};
+	});*/
+	app.directive('labelInput', function($compile) {
+		return {
+			restrict: 'E',
+			scope: {
+				inputModel: '='
+			},
+			template: '<div class="super-input"><label for="my-input" onclick="this.nextSibling.focus()"></label><br/><input name="my-input" type="text" value="" ng-model="inputModel"/></div>',
+			replace: true/*,
+			link: function($scope, elem, attr, ctrl) {
+				console.debug($scope);
+			}*/
+		};
 	});
 
 //})();

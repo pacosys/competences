@@ -31,6 +31,12 @@
 	<h1>Competences</h1>
 	<div id="quick-menu">
 	</div>
+	<div>
+		<p> L'établissement s'appelle {{school.schoolName}} </p>
+		<p> Son directeur est {{school.directorName}} </p>
+		<label-input label="NOM" input-model="school.schoolName">
+		</label-input>
+	</div>
 
 	<div ng-controller="TabController as tab" class="list-frame">
 		<ul class="nav nav-pills">
@@ -88,27 +94,23 @@
 				<h3>Élève</h3>
 				<form novalidate>
 					<!-- Text input-->
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="firstname">Prénom</label>  
-						<input name="firstname" placeholder="Prénom" class="input-md col-md4" type="text" value="{{school.currentStudent.firstname}}"/>
-					</div>
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="name">Nom</label>  
-						<input name="name" placeholder="Prénom" class="input-md col-md4 control-input" type="text" value="{{school.currentStudent.name}}"/>
-					</div>
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="birthdate">Date de naissance</label>  
-						<input name="birthdate" placeholder="Date" class="input-md col-md4" type="text" value="{{school.currentStudent.birthdate}}"/>
-					</div>
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="firstname">Classe</label>  
-						<input name="class" placeholder="Classe" class="input-md col-md4" type="text" value="{{school.currentStudent.class}}"/>
-					</div>
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="firstname">Groupes</label>  
-						<input name="groups" placeholder="A dp espagnol" class="input-md col-md4" type="text" value="{{school.currentStudent.groups}}"/>
-					</div>
-					<input type="submit" value="Enregistrer"/>
+					<fieldset class="super-input">
+						<input name="firstname" type="text" value="" ng-model="school.currentStudent.firstname" required/>
+						<label for="firstname">Prénom</label>
+					</fieldset>
+					<fieldset class="super-input">
+						<input name="name" type="text" value="" ng-model="school.currentStudent.name" required/>
+						<label for="name">NOM</label>
+					</fieldset>
+					<fieldset class="super-input">
+						<input name="birthdate" type="text" value="" ng-model="school.currentStudent.birthdate" required/>
+						<label for="birthdate">Date de naissance</label>
+					</fieldset>
+					<fieldset class="super-input">
+						<input name="class" type="text" value="" ng-model="school.currentStudent.class" required/>
+						<label for="class">Classe</label>
+					</fieldset>
+					<input type="submit" ng-click="school.saveStudent()" value="Enregistrer"/>
 					<button ng-click="school.setPopup(0)">Fermer</button>
 				</form>
 			</div>

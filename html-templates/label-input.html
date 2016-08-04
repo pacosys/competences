@@ -1,0 +1,10 @@
+<div ng-form>
+	<p>The label pointer is «{{input.label}}»</p>
+	<div class="super-input">
+		<label for="my-input" onclick="this.nextSibling.focus()"></label><br/>
+		<input name="my-input" type="text" value="" ng-model="{{input.label}}"/>
+	</div>
+	<button type="submit" class="erase">Submit</button>
+</div>
+
+
