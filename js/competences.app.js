@@ -24,7 +24,7 @@ if(localStorage.getItem("Evaluations"))
 	var Evaluations = localStorage.getObj("Evaluations");
 else
 	var Evaluations = {"5e4.20151015.DST1":{"name":"DST1","class":"5e4","date":"15/10/2015","weekDay":"jeudi","timestamp":1444860000000,"eid":"5e4.20151015.DST1","competences":"maths.5e.Additionner maths.5e.Additionner-2 maths.6e.Additionner maths.6e.Reconnaitre maths.6e.Additionner/Soustraire","groups":"","scaleOfSuccess":"3"},"5e4.20160219.DevoirCommun1":{"name":"DevoirCommun1","class":"5e4","date":"19/02/2016","weekDay":"vendredi","timestamp":1455836400000,"eid":"5e4.20160219.DevoirCommun1","competences":"maths.5e.Traduire maths.5e.Calculer maths.5e.Changer maths.5e.Additionner-2 maths.5e.Prendre maths.5e.Traduire-2 maths.5e.Effectuer maths.5e.Determiner maths.5e.Comprendre maths.5e.Effectuer-2","groups":"dc1","scaleOfSuccess":"4"},"5e4.20151227.DST2":{"name":"DST2","class":"5e4","date":"27/12/2015","weekDay":"dimanche","timestamp":1451170800000,"eid":"5e4.20151227.DST2","competences":"maths.5e.Additionner maths.5e.Additionner-2 maths.6e.Additionner maths.6e.Reconnaitre maths.6e.Additionner/Soustraire maths.5e.Determiner maths.5e.Calculer maths.5e.Comprendre maths.5e.Prendre maths.4e.Conna_tre maths.3e.Conna_tre maths.3e.Conna_tre-2 maths.5e.Effectuer","groups":"dst","scaleOfSuccess":"4"},"5e4.20151227.Interro1":{"name":"Interro1","class":"5e4","date":"07/01/2016","weekDay":"jeudi","timestamp":1452121200000,"eid":"5e4.20151227.Interro1","competences":"maths.5e.Additionner maths.5e.Additionner-2 maths.6e.Additionner maths.6e.Reconnaitre maths.6e.Additionner/Soustraire maths.5e.Prendre maths.5e.Determiner maths.5e.Comprendre maths.5e.Calculer maths.5e.Changer","groups":"interro","scaleOfSuccess":"4"},"5e4.20160421.DevoirCommun3":{"name":"DevoirCommun3","class":"5e4","date":"21/04/2016","weekDay":"jeudi","timestamp":1461189600000,"eid":"5e4.20160421.DevoirCommun3","competences":"maths.5e.Effectuer maths.5e.Traduire maths.4e.Multiplier maths.5e.Additionner maths.5e.Calculer maths.5e.Traduire-2 maths.5e.Determiner maths.5e.Changer maths.5e.Comprendre maths.6e.Additionner/Soustraire maths.5e.Additionner-2 maths.6e.Additionner","groups":"dc","scaleOfSuccess":"4"}};
-for(var ev in Evaluations){
+for(var ev=0;ev<Evaluations.length;ev++){
 	e = Evaluations[ev];
 	e.competences = e.competences.split(' ').join(';');
 	delete e.baremeMax;
@@ -161,18 +161,18 @@ var app = angular.module('competences',[]);
 		};
 		this.deleteStudent = function(){
 			var cs = this.currentStudent, oldId = cs.sid;
-			if(Students[cs.sid])
+			if(cs.sid==0){
+				delete Students[0];
+				this.currentStudent = {};
+				this.popup = 0;
+			}
+			else if(Students[cs.sid])
 				if(confirm("Êtes-vous sûr(e) de vouloir supprimer cet élève ?")){
 					delete Students[cs.sid];
 					this.currentStudent = {};
 					this.popup = 0;
 					localStorage.setObj("Students",Students);
 				}
-			else if(cs.sid==0){
-				delete Students[0];
-				this.currentStudent = {};
-				this.popup = 0;
-			}
 		};
 		this.studentsSortIsReverse = false;
 		this.studentsSortAttribute = "";
@@ -210,19 +210,19 @@ var app = angular.module('competences',[]);
 			this.selectCompetence(Competences["vrac"][0]={"cid":0,"directory":"vrac"});
 		};
 		this.deleteCompetence = function(){
-			var cs = this.currentCompetence;
-			if(Competences[cs.directory][cs.cid])
-				if(confirm("Êtes-vous sûr(e) de vouloir supprimer cette compétence ?")){
-					delete Competences[cs.directory][cs.cid];
-					this.currentCompetence = {};
-					this.popup = 0;
-					localStorage.setObj("Competences",Competences);
-				}
-			else if(cs.cid==0){
+			var cs = this.currentCompetence, dir = Competences[cs.directory][cs.cid]?cs.directory:"vrac";
+			if(cs.cid==0){
 				delete Competences[0];
 				this.currentCompetence = {};
 				this.popup = 0;
 			}
+			else if(Competences[dir][cs.cid])
+				if(confirm("Êtes-vous sûr(e) de vouloir supprimer cette compétence ?")){
+					delete Competences[dir][cs.cid];
+					this.currentCompetence = {};
+					this.popup = 0;
+					localStorage.setObj("Competences",Competences);
+				}
 		};
 
 	// Évaluations :
@@ -258,18 +258,18 @@ var app = angular.module('competences',[]);
 		};
 		this.deleteEvaluation = function(){
 			var cs = this.currentEvaluation, oldId = cs.eid;
-			if(Evaluations[cs.eid])
+			if(cs.eid==0){
+				delete Evaluations[0];
+				this.currentEvaluation = {};
+				this.popup = 0;
+			}
+			else if(Evaluations[cs.eid])
 				if(confirm("Êtes-vous sûr(e) de vouloir supprimer cet élève ?")){
 					delete Evaluations[cs.eid];
 					this.currentEvaluation = {};
 					this.popup = 0;
 					localStorage.setObj("Evaluations",Evaluations);
 				}
-			else if(cs.eid==0){
-				delete Evaluations[0];
-				this.currentEvaluation = {};
-				this.popup = 0;
-			}
 		};
 		this.evaluationsSortIsReverse = false;
 		this.evaluationsSortAttribute = "";
