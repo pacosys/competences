@@ -1,10 +1,22 @@
 /* Commencer avec les bonnes mesures */
-* {box-sizing: border-box;}
+* {
+	box-sizing: border-box;
+	transition-property:	opacity;
+	transition-duration:	0.3s;
+	transition-timing-function:ease-in-out;
+}
+a:focus, a:active {
+	ouline:0; !important;
+}
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
 
 body {
 	max-width:	1200px;
 	width:		90%;
 	margin:		auto;
+	background-color:rgba(200,200,200,0.05);
+	overflow-x:	hidden;
 }
 .wrapper {
 	width:		100%;
@@ -26,18 +38,20 @@ body {
 	overflow:	scroll;
 }
 
+.list-element {
+	height:		2.5em;
+	padding:	0.5em 1em;
+	cursor:		pointer;
+}
 .list-element, .list-element>span {
 	display: 	block;
 	width:		100%;
-	height:		2em;
-	padding:	0 0.5em;
 	margin:		0;
-	margin-right:	2em;
-	cursor:		pointer;
 }
 .list-element:nth-of-type(2n):not([alt]),
 .list-element[alt="true"]{
 	background-color:	rgba(200,200,200,0.5);
+	background-color:	rgba(0,165,240,0.1);
 }
 
 
@@ -47,7 +61,7 @@ div[popup] {
 	left:		0;
 	width:		100%;
 	height:		100%;
-	background-color:rgba(150,150,150,0.5);
+	background-color:rgba(150,150,150,0.6);
 }
 div[popup]>div {
 	position:	relative;
@@ -72,58 +86,6 @@ div[popup]>div {
 }*/
 
 
-search-input a.erase-input{
-	display:	inline-block;
-	margin-left:	-1.2em;
-	font-size:	1.7em;
-	cursor:		pointer;
-	background-color:rgba(0,0,0,0);
-	border-radius:	1em;
-	width:		1.5em;
-	color:		red;
-	padding:	0 0.3em;
-	text-decoration:none;
-}
-search-input a.erase-input:hover{
-/*	background-color:rgba(50,50,50,0.3);*/
-}
-
-.search-input {
-	display:	inline-block;
-	height:		4em;
-}
-.search-input label {
-	width:		auto;
-	min-height:	1.2em;
-	max-height:	1.2em;
-	color:		#aaa;
-	font-size:	1.2em;
-	transition-property: top, left, color, opacity, transform, font-size;
-	transition-duration:0.5s;
-	transition-timing-function: ease-in-out;
-}
-.search-input label:before {
-	display:	inline-block;
-	position:	relative;
-	top:		1.7em;
-	left:		1em;
-	transition-property: top, left, color, opacity, transform, font-size;
-	transition-duration:0.5s;
-	transition-timing-function: ease-in-out;
-}
-.search-input label[for="search-input"]:before {
-	content:	"Recherche";
-}
-.search-input label[name]:before {
-	content:	attr(name);
-}
-.search-input.input-focused label:before {
-	top:		0;
-	left:		0;
-	color:		#0af; /*bleu électrique*/
-	font-size:	0.8em;
-}
-
 
 /*Arrange les input avec un label graphiquement dynamique */
 .super-input {
@@ -131,18 +93,25 @@ search-input a.erase-input:hover{
 	width:		20em;
 	height:		4em;
 	border:		none;
+	margin:		0.2em 0;
+	padding-top:	1.5em;
 }
 .super-input input{
-	position:	absolute;
+	/*position:	absolute;
 	bottom:		0;
-	left:		0;
+	left:		0;*/
+	border:		1px solid darkgray;
+	border-width:	0 0 1px 0;
+	margin-left:	0.7em;
+	text-indent:	0.3em;
+	outline:	none;
 }
 .super-input label{
 	position:	absolute;
-	top:		1.7em;
+	top:		1.5em;
 	left:		1em;
 	transition-property: top, left, bottom, color, opacity, transform, font-size;
-	transition-duration:0.5s;
+	transition-duration:0.3s;
 	transition-timing-function: ease-in-out;
 }
 .super-input a.erase-input{
@@ -159,9 +128,41 @@ search-input a.erase-input:hover{
 	content:	attr(name);
 	color:		#0af;  /*bleu électrique*/
 	top:		0.5em;
-	left:		1em;
+	left:		0;
 	font-size:	0.8em;
 }
+.super-input input:focus,
+.super-input input:valid {
+	border-color:	#0af;
+}
+
+/*   RECHERCHE   */
+.search-input {
+	padding-top:	1em;
+}
+.search-input a.erase-input{
+	display:	inline-block;
+	margin-left:	1em;
+	font-size:	1.7em;
+	cursor:		pointer;
+	background-color:rgba(0,0,0,0);
+	width:		1.5em;
+	max-height:	1em;
+	color:		red;
+	padding:	0 0.3em;
+	text-decoration:none;
+	opacity:	0;
+}
+.search-input input:valid + label + a.erase-input {
+	opacity:	1;
+}
+.search-input label[for="search-input"]:before {
+	content:	"Recherche";
+}
+.search-input label[name]:before {
+	content:	attr(name);
+}
+
 
 
 /*
@@ -181,10 +182,25 @@ search-input a.erase-input:hover{
 ul.nav{
 	display:	flex;
 	list-style-type:none;
+	padding-left:	0;
+	margin-bottom:	0;
 }
 ul.nav>li {
 	flex:		1;
 	text-align:	center;
+	border:		1px solid black;
+	border-width:	1px 0 1px 1px;
+	background-color:#eee;
+	background-color:rgba(0,160,255,0.05);
+	border-radius:	5px 5px 0 0;
+}
+ul.nav>li:last-child{
+	border-right:	1px solid black;
+	border-width:	1px 1px 1px 1px;
+}
+ul.nav>li.active {
+	border-bottom-width:0;
+	background-color:white;
 }
 ul.nav>li>a {
 	display:	block;
@@ -195,19 +211,27 @@ ul.nav>li>a {
 	font-size:	1.2em;
 	height:		3em;
 	padding-top:	0.8em;
+	border:		none;
+	cursor:		pointer;
 }
 ul.nav>li.active>a {
-	background-color:rgba(0,160,255,0.7);
-	color:		white;
+	/*background-color:rgba(0,160,255,0.7);
+	color:		white;*/
+	font-weight:	bold;
 }
 ul.nav>li:not(.active):hover>a {
 	background-color:rgba(0,160,255,0.05);
-	color:		white;
+	background-color:rgba(255,255,255,0.5);
+}
+.nav-tabs {
+	display:	flex;
+	border:		1px solid black;
+	border-width:	0 1px 1px 1px;
 }
 .nav-tab {
 	display:	inline-block;
 	margin:		0;
-	border:		1px solid black;
+	background-color:white;
 }
 .nav-tab.active {
 	animation: activate-tab 0.5s;
@@ -219,6 +243,7 @@ ul.nav>li:not(.active):hover>a {
 	opacity:	0;
 	padding:	0;
 	margin:		0;
+	border-width:	0;
 }
  /* The animation code */
 @keyframes activate-tab {
@@ -245,4 +270,52 @@ ul.nav>li:not(.active):hover>a {
 		padding:	0;
 	}
 }
+
+
+
+#school-lists .super-input {
+	display:	inline-block;
+	min-width:	35%;
+}
+#school-lists .buttons-block {
+	display:	flex;
+	width:		100%;
+	margin-top:	2em;
+}
+#school-lists .buttons-block>* {
+	flex:		1;
+}
+
+#students-container div.list-element {
+	position:	relative;
+	overflow-x:	hidden;
+}
+#students-container div.list-element button {
+	position:	absolute;
+	top:		0.3em;
+	right:		-100%;
+	transition-property:	right;
+	transition-duration:	0.3s;
+	transition-timing-function:ease-in-out;
+}
+#students-container div.list-element:hover button {
+	right:		1em;
+}
+
+#competences-container .group-container {
+	position:	relative;
+}
+#competences-container .group-container {
+	border-bottom:	1px dotted gray;
+	padding:	1px;
+	padding:	1em 0 0 2em;
+	margin-bottom:	1em;
+}
+#competences-container .group-container:before {
+	position:	absolute;
+	content:	attr(competence-directory)" : ";
+	left:		0;
+	top:		0;
+}
+
 
