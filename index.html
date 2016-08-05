@@ -47,22 +47,25 @@
 		<div class="nav-tabs">
 			<!--<div ng-show="tab.isSet(1)" class="nav-tab wrapper">-->
 			<div ng-class="{active :tab.isSet(1)}" class="nav-tab wrapper">
-				<p>This is a student controller</p>
+				<button ng-click="school.setNewStudent()">Nouvel(le) élève</button>
 				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#students-container')"></search-input>
-				<button ng-click="school.setNewStudent()">Nouveau</button>
+				<ul class="radio-stack sort-parameters-container" ng-click="school.studentsSort()">
+					<li>Trier par : &nbsp;&nbsp;<label class="label-reverse-sort" ng-class="{'sort-reversed': school.studentSortIsReversed}"><input type="checkbox" ng-model="school.studentsSortIsReverse" ng-click="school.studentsSort()"/></label></li>
+					<li><label><input type="radio" name="sort-students-radio" ng-model="school.studentsSortAttribute" value="sort-tag"/><span>classe</span></label></li>
+					<li><label><input type="radio" name="sort-students-radio" ng-model="school.studentsSortAttribute" value="sort-tag-by-name"/><span>nom</span></label></li>
+					<li><label><input type="radio" name="sort-students-radio" ng-model="school.studentsSortAttribute" value="sort-tag-by-birthdate"/><span>date de naissance</span></label></li>
+				</ul>
 				<div class="list-container" id="students-container">
-					<button onclick="sortElementsIn('#students-container')">Sort by class then names</button>
-					<button onclick="sortElementsIn('#students-container','sort-tag-by-firstname')">Sort by firstname then name</button>
-					<div ng-repeat="student in school.students" class="list-element" sort-tag="{{student.class}}-{{student.name}}-{{student.firstname}}" sort-tag-by-firstname="{{student.firstname}}-{{student.name}}-{{student.class}}">
-						<span ng-click="school.selectStudent(student)" title="{{student.name}} {{student.firstname}} en {{student.class}} est né {{student.birthdate}}">
-							{{student.firstname}} {{student.name}} né<span ng-show="{{student.sex === 'F'}}">e</span> le {{student.birthdate}} est en {{student.class}}
+					<div ng-repeat="student in school.students" class="list-element" sort-tag="{{student.class}}-{{student.name}}-{{student.firstname}}" sort-tag-by-birthdate="{{student.birthdateReverse}}-{{student.name}}" sort-tag-by-firstname="{{student.name}}-{{student.firstname}}-{{student.class}}">
+						<span ng-click="school.selectStudent(student)" title="{{student.name}} {{student.firstname}} en {{student.class}} est né {{student.birthdate}}" ng-class="school.currentStudent == student">
+							{{student.firstname}} {{student.name}} né<span ng-class="{erase: student.gender === 'M'}">e</span> le {{student.birthdate}} est en {{student.class}} ({{student.sid}})
 						</span>
 						<button ng-click="bilanEleve(student)">bilan de {{student.firstname}}</button>
 					</div>
 				</div>
 			</div>
 			<div ng-class="{active :tab.isSet(2)}" class="nav-tab wrapper">
-				<p>This is a competence controller</p>
+				<button ng-click="school.setNewCompetence()">Nouvelle compétence</button>
 				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#competences-container')"></search-input>
 				<div class="list-container" id="competences-container">
 					<div ng-repeat="(groupName,groupSet) in school.competences" class="group-container" competence-directory="{{groupName}}">
@@ -75,7 +78,7 @@
 				</div>
 			</div>
 			<div ng-class="{active :tab.isSet(3)}" class="nav-tab wrapper">
-				<p>This is a evaluation controller</p>
+				<button ng-click="school.setNewEvaluation()">Nouvelle évaluation</button>
 				<search-input ng-controller="SearchController as search" ng-init="search.setTarget('#evaluations-container')"></search-input>
 				<div class="list-container" id="evaluations-container">
 					<div ng-repeat="eval in school.evaluations" class="list-element">
@@ -90,17 +93,26 @@
 
 	<div id="school-lists">
 		<div  popup ng-show="school.isPopup('student')">
-			<div class="container">
-				<h2>Élève</h2>
+			<div class="container wrapper">
+				<h2>Élève  id:{{school.currentStudent.sid}}</h2>
 				<form class="wrapper" novalidate>
-					<!-- Text input-->
-					<label-input input-label="'Prénom'" input-model="school.currentStudent.firstname"></label-input>
-					<label-input input-label="'NOM'" input-model="school.currentStudent.name"></label-input>
-					<label-input input-label="'Date de naissance'" input-model="school.currentStudent.birthdate"></label-input>
-					<label-input input-label="'Classe'" input-model="school.currentStudent.class"></label-input>
+					<div class="form-block">
+						<!-- Text input-->
+						<label-input input-label="'Prénom'" input-model="school.currentStudent.firstname"></label-input>
+						<label-input input-label="'NOM'" input-model="school.currentStudent.name"></label-input>
+						<label-input input-label="'Date de naissance'" input-model="school.currentStudent.birthdate"></label-input>
+						<label-input input-label="'Classe'" input-model="school.currentStudent.class"></label-input>
+						<ul class="radio-stack">
+							<li>Sexe : {{school.currentStudent.gender}}</li>
+							<li><label><input type="radio" name="student.gender" ng-model="school.currentStudent.gender" value="M"/><span>M</span></label></li>
+							<li><label><input type="radio" name="student.gender" ng-model="school.currentStudent.gender" value="F"/><span></span>F</label></li>
+						</ul>
+						<button class="none"></button>
+					</div>
 					<div class="buttons-block">
 						<button ng-click="school.resetStudent()">Reset</button>
-						<button ng-click="school.setPopup(0)">Fermer</button>
+						<button ng-click="school.deleteStudent()">Supprimer</button>
+						<button ng-click="school.saveStudent()">Fermer</button>
 					</div>
 				</form>
 			</div>
@@ -109,34 +121,55 @@
 			<div class="container">
 				<h2>Compétences</h2>
 				<form class="wrapper" novalidate>
-					<!-- Text input-->
-					<label-input input-label="'Nom'" input-model="school.currentCompetence.name"></label-input>
-					<label-input input-label="'Dossier'" input-model="school.currentCompetence.directory"></label-input>
-					<label-input input-label="'Niveau'" input-model="school.currentCompetence.level"></label-input>
-					<label-input input-label="'Matière'" input-model="school.currentCompetence.subject"></label-input>
+					<div class="form-block">
+						<!-- Text input-->
+						<label-input input-label="'Nom'" input-model="school.currentCompetence.name"></label-input>
+						<div class="super-input">
+							<select ng-model="school.currentCompetence.directory">
+								<option ng-repeat="(groupName,groupSet) in school.competences" class="group-container" value="{{groupName}}">{{groupName}}</option>
+								<option ng-click="school.openDirectorySettings('add')" value="">*nouvelle*</option>
+							</select>
+							<label for="my-input" onclick="this.previousSibling.focus()">Dossier</label>
+						</div>
+						<label-input input-label="'Niveau'" input-model="school.currentCompetence.level"></label-input>
+						<label-input input-label="'Matière'" input-model="school.currentCompetence.subject"></label-input>
+						<button class="none"></button>
+					</div>
 					<div class="buttons-block">
 						<button ng-click="school.resetCompetence()">Reset</button>
-						<button ng-click="school.setPopup(0)">Fermer</button>
+						<button ng-click="school.deleteCompetence()">Supprimer</button>
+						<button ng-click="school.saveCompetence()">Fermer</button>
 					</div>
 				</form>
 			</div>
 		</div>
 		<div  popup ng-show="school.isPopup('evaluation')">
-			<div class="container">
+			<div class="container wrapper">
 				<h2>Évaluation</h2>
 				<form class="wrapper" novalidate>
-					<!-- Text input-->
-					<label-input input-label="'Nom'" input-model="school.currentEvaluation.name"></label-input>
-					<label-input input-label="'Type'" input-model="school.currentEvaluation.type"></label-input>
-					<label-input input-label="'Classe'" input-model="school.currentEvaluation.class"></label-input>
-					<label-input input-label="'Date'" input-model="school.currentEvaluation.date"></label-input>
+					<div class="form-block">
+						<!-- Text input-->
+						<label-input input-label="'Nom'" input-model="school.currentEvaluation.name"></label-input>
+						<label-input input-label="'Date'" input-model="school.currentEvaluation.date"></label-input>
+						<label-input input-label="'Classe'" input-model="school.currentEvaluation.class"></label-input>
+						<label-input input-label="'Competences'" input-model="school.currentEvaluation.competences"></label-input>
+						<label-input input-label="'Barème'" input-model="school.currentEvaluation.scaleOfSuccess"></label-input>
+						<button class="none"></button>
+					</div>
 					<div class="buttons-block">
 						<button ng-click="school.resetEvaluation()">Reset</button>
-						<button ng-click="school.setPopup(0)">Fermer</button>
+						<button ng-click="school.deleteEvaluation()">Supprimer</button>
+						<button ng-click="school.saveEvaluation()">Fermer</button>
 					</div>
 				</form>
 			</div>
 		</div>
+	</div>
+	<div>
+		<button ng-click="showCode=!showCode"> Montrer/Cacher </button><br/>
+		<code ng-show="showCode" style="max-height:20em; max-height:60%;">
+			<!--{{school.students}}-->
+		</code>
 	</div>
 </body>
 </html>

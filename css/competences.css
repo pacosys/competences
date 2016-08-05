@@ -5,7 +5,8 @@
 	transition-duration:	0.3s;
 	transition-timing-function:ease-in-out;
 }
-a:focus, a:active {
+a:focus, a:active,
+select:focus, select:active {
 	ouline:0; !important;
 }
 :focus {outline:none;}
@@ -18,12 +19,32 @@ body {
 	background-color:rgba(200,200,200,0.05);
 	overflow-x:	hidden;
 }
+
+button {
+	border-radius:	0.1em;
+	border:		none;
+	padding:	0.5em 1em;
+	margin:		0 1.5em;
+	background-color:#058;
+	color:		#eee;
+	box-shadow:	0.1em 0.2em rgba(0,160,240,0.5);
+}
+button:hover{
+	background-color:#069;
+}
+button.active{
+	
+}
+
 .wrapper {
 	width:		100%;
 	padding:	1em 2em;
 }
 
-.erase, div.erase, div div.erase, div div div.erase {
+body .none, body *.none, body div *.none, body div div *.none {
+	display:	none;
+}
+body .erase, body *.erase, body div *.erase, body div div *.erase {
 	display:	none;
 }
 
@@ -37,10 +58,9 @@ body {
 	max-height:	500px;
 	overflow:	scroll;
 }
-
 .list-element {
-	height:		2.5em;
-	padding:	0.5em 1em;
+	height:		2.7em;
+	padding:	0.6em 1em;
 	cursor:		pointer;
 }
 .list-element, .list-element>span {
@@ -96,15 +116,23 @@ div[popup]>div {
 	margin:		0.2em 0;
 	padding-top:	1.5em;
 }
-.super-input input{
+.super-input input,
+.super-input select{
 	/*position:	absolute;
 	bottom:		0;
 	left:		0;*/
+	background-color:white;
 	border:		1px solid darkgray;
 	border-width:	0 0 1px 0;
 	margin-left:	0.7em;
 	text-indent:	0.3em;
 	outline:	none;
+}
+.super-input select{
+	min-width:	75%;
+}
+.super-input input:required:invalid{
+	box-shadow:	none; !important;
 }
 .super-input label{
 	position:	absolute;
@@ -124,7 +152,8 @@ div[popup]>div {
 	
 }
 .super-input input:focus + label,
-.super-input input:valid + label {
+.super-input input:valid + label,
+.super-input select:valid + label {
 	content:	attr(name);
 	color:		#0af;  /*bleu électrique*/
 	top:		0.5em;
@@ -132,7 +161,8 @@ div[popup]>div {
 	font-size:	0.8em;
 }
 .super-input input:focus,
-.super-input input:valid {
+.super-input input:valid,
+.super-input select:valid {
 	border-color:	#0af;
 }
 
@@ -230,6 +260,7 @@ ul.nav>li:not(.active):hover>a {
 }
 .nav-tab {
 	display:	inline-block;
+	position:	relative;
 	margin:		0;
 	background-color:white;
 }
@@ -317,5 +348,85 @@ ul.nav>li:not(.active):hover>a {
 	left:		0;
 	top:		0;
 }
+
+.sort-parameters-container{
+	position:	absolute;
+	top:		0.5em;
+	right:		0.5em;
+}
+.sort-parameters-container .label-reverse-sort:after {
+	content:	'↓';
+}
+.sort-parameters-container .label-reverse-sort.sort-reversed:after {
+	content:	'↑';
+}
+
+div.radio-stack,
+ul.radio-stack{
+	display:	inline-block;
+	width:		auto;
+	height:		auto;
+	list-style:	none;
+	padding-left:	0;
+	margin:		0;
+}
+.radio-stack label {
+	cursor:		pointer;
+}
+div.radio-stack>span [type="radio"],
+ul.radio-stack>li [type="radio"]{
+	margin-left:	1.5em;
+}
+
+
+input[type='radio'] {
+	display:	inline-block;
+	width:		1em;
+	height:		1em;
+	border:		1px solid darkgray;
+	border-radius:	50%;
+	outline:	none;
+	opacity:	0;
+}
+
+input[type='radio']:hover + span:before {
+	box-shadow:0 0 0.25em 0 #0af inset;
+}
+
+input[type='radio'] + span:before {
+	content:	'';
+	display:	inline-block;
+	width:		1em;
+	height:		1em;
+	margin: 	0 0.5em 0 -1.5em;    
+	box-shadow:	0 0 0.2em 0 gray inset;
+	border-radius:	50%;
+	border:		1px solid #0af;
+	cursor:		pointer;
+}
+input[type='radio']:checked + span:before {
+	background:	#0af;
+	box-shadow:	0 0 0.1em 0 #0af inset;
+	background:	radial-gradient( #0af 0%, #0af 40%, #fff 51%, #fff 100%);
+	animation:	activate-radio 1s;
+}
+
+ /* The Radio animation code */
+@keyframes activate-radio {
+	from {
+		transform:scale(1);
+	}
+	30%  {
+		transform:scale(1.15);
+	}
+	70%  {
+		transform:scale(0.9);
+	}
+	to {
+		transform:scale(1);
+	}
+}
+
+
 
 
