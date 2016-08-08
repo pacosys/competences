@@ -1,6 +1,6 @@
 <div class="search-input super-input">
 	<input name="search-input" type="search" search-target="{{search.searchTarget}}" value="" ng-model="search.searchTerms" ng-change="search.doSearch()" required/>
-	<label for="search-input" onclick="this.previousSibling.focus()"></label>
+	<label for="search-input" onclick="this.previousElementSibling.focus()"></label>
 	<a class="erase-input" ng-click="search.resetSearch()">&times;</a>
 	<span style="float:right;">( {{search.numberOfElementsFound}} )</span>
 </div>

@@ -1,0 +1,163 @@
+/*Arrange les input avec un label graphiquement dynamique */
+.super-input {
+	position:	relative;
+	width:		20em;
+	height:		4em;
+	border:		none;
+	margin:		0.2em 0;
+	padding-top:	1.5em;
+}
+.super-input input,
+.super-input select{
+	/*position:	absolute;
+	bottom:		0;
+	left:		0;*/
+	background-color:white;
+	border:		1px solid darkgray;
+	border-width:	0 0 1px 0;
+	margin-left:	0.7em;
+	text-indent:	0.3em;
+	outline:	none;
+	font-size:	1em;
+}
+.super-input select{
+	min-width:	75%;
+}
+.super-input input:required:invalid{
+	box-shadow:	none; !important;
+}
+.super-input label{
+	position:	absolute;
+	top:		1.5em;
+	left:		1em;
+	transition-property: top, left, bottom, color, opacity, transform, font-size;
+	transition-duration:0.3s;
+	transition-timing-function: ease-in-out;
+	cursor:		text;
+}
+.super-input a.erase-input{
+	position:	relative;
+	left:		-2em;
+}
+.super-input input + label {
+	content:	attr(name);
+	color:		darkgray;
+}
+.super-input input:focus + label,
+.super-input input:valid + label,
+.super-input select:valid + label {
+	content:	attr(name);
+	color:		#0af;  /*bleu électrique*/
+	top:		0.5em;
+	left:		0;
+	font-size:	0.8em;
+}
+.super-input input:focus,
+.super-input input:valid,
+.super-input select:valid {
+	border-color:	#0af;
+}
+
+/*   RECHERCHE   */
+.search-input {
+	padding-top:	1em;
+}
+.search-input a.erase-input{
+	display:	inline-block;
+	margin-left:	1em;
+	font-size:	1.7em;
+	cursor:		pointer;
+	background-color:rgba(0,0,0,0);
+	width:		1.5em;
+	max-height:	1em;
+	color:		red;
+	padding:	0 0.3em;
+	text-decoration:none;
+	opacity:	0;
+}
+.search-input input:valid + label + a.erase-input {
+	opacity:	1;
+}
+.search-input label[for="search-input"]:before {
+	content:	"Recherche";
+}
+.search-input label[name]:before {
+	content:	attr(name);
+}
+
+
+
+/*	Les boutons radio		*/
+div.radio-stack,
+ul.radio-stack{
+	display:	inline-block;
+	width:		auto;
+	height:		auto;
+	list-style:	none;
+	padding-left:	0;
+	margin:		0;
+	cursor:		pointer;
+}
+.radio-stack label {
+	cursor:		pointer;
+}
+div.radio-stack>span [type="radio"],
+ul.radio-stack>li [type="radio"]{
+	margin-left:	1.5em;
+}
+
+
+input[type='radio'] {
+	display:	inline-block;
+	width:		1em;
+	height:		1em;
+	border:		1px solid darkgray;
+	border-radius:	50%;
+	outline:	none;
+	opacity:	0;
+}
+
+input[type='radio']:hover + span:before {
+	box-shadow:0 0 0.25em 0 #0af inset;
+}
+
+input[type='radio'] + span:before {
+	content:	'';
+	display:	inline-block;
+	width:		1em;
+	height:		1em;
+	margin: 	0 0.5em 0 -1.5em;    
+	box-shadow:	0 0 0.2em 0 gray inset;
+	border-radius:	50%;
+	border:		1px solid #0af;
+	cursor:		pointer;
+}
+input[type='radio']:checked + span:before {
+	background:	#0af;
+	box-shadow:	0 0 0.1em 0 #0af inset;
+	background:	radial-gradient( #0af 0%, #0af 40%, #fff 51%, #fff 100%);
+	animation:	activate-radio 1s;
+}
+
+ /* The Radio animation code */
+@keyframes activate-radio {
+	from {
+		transform:scale(1);
+		border-color:#0af;
+	}
+	30%  {
+		transform:scale(1.15);
+		border-color:#aef;
+	}
+	70%  {
+		transform:scale(0.9);
+		border-color:#a0f;
+	}
+	to {
+		transform:scale(1);
+		border-color:#0af;
+	}
+}
+
+
+

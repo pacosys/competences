@@ -1,0 +1,157 @@
+#todo-list-block {
+	position:	fixed;
+	bottom:		0;
+	right:		3em;
+	width:		40em;
+	border:		1px solid #058;
+	border-width:	0 1px;
+	background-color:white;
+}
+#todo-list-block div.title {
+	background-color:#058;
+	color:		white;
+	height:		2.5em;
+	font-size:	1.5em;
+	cursor:		pointer;
+	padding-top:	0.5em;
+	padding-left:	3em;
+}
+#todo-list-block div.title span.close-button {
+	float:		right;
+	margin-right:	0.3em;
+	font-size:	1.5em;
+/*	border-radius:	50%;
+	background-color:rgba(255,255,255,0.1);*/
+	width:		1em;
+	height:		1em;
+}
+
+#todo-list-block div.container {
+	height:		40em;
+	transition:	height 0.3s ease-in-out;
+}
+#todo-list-block div.container.ng-hide {
+	height:		0;
+}
+
+#todo-list-block div.container .super-input {
+	display:	inline-block;
+	max-width:	calc( 90% - 3em );
+}
+
+#todo-list-block div.container ul {
+	list-style-type:none;
+	padding:	0;
+	margin:		0;
+	counter-reset:	todo-number;
+	overflow-y:	scroll;
+}
+#todo-list-block div.container li {
+	position:	relative;
+	width:		100%;
+	border-bottom:	1px solid black;
+	height:		5em;
+	background-color:rgba(255,255,255,0.5);
+	transition:	0.5s ease-in-out background-color;
+	overflow:	hidden;
+}
+#todo-list-block div.container li:hover {
+	background-color:rgba(0,80,160,0.2);
+}
+#todo-list-block div.container li span {
+	display:	inline-block;
+	position:	relative;
+	top:		50%;
+	transform:	translateY(-50%);
+	padding-left:	1.5em;
+	width:		calc( 100% - 3em);
+	width:		100%;
+	max-height:	100%;
+}
+#todo-list-block div.container li span pre {
+	display:	inline-block;
+	font-size:	1.4em;
+	vertical-align:	middle;
+}
+#todo-list-block div.container li span:before {
+	counter-increment:todo-number;
+	content:	counter(todo-number)"  >   ";
+}
+#todo-list-block div.container li:last-child input,
+#todo-list-block div.container li:last-child textarea {
+	width:		calc( 100% - 4em );
+	height:		4.5em;
+	vertical-align:	middle;
+	resize: 	none;
+}
+#todo-list-block div.container li:last-child textarea {
+	display: 	inline-block;
+	position: 	absolute;
+	top:		-1.8em;
+	font-size:	1.1em;
+	background-color:rgba(255,255,255,0.2);
+	border:		none;
+	margin:		auto;
+	height:		4.5em;
+}
+
+#todo-list-block div.container li button{
+	margin:		0;
+}
+#todo-list-block div.container li div.buttons{
+	position:	absolute;
+	right:		2em;
+	top:		0.05em;
+	display:	none;
+	vertical-align:	middle;
+}
+#todo-list-block div.container li div.buttons>button{
+	position:	relative;
+	top:		-1em;
+}
+#todo-list-block div.container li:hover div{
+	display:	inline-block;
+}
+#todo-list-block div.container li div.buttons>div {
+	display:	inline-block;
+	font-weight:	bold;
+	margin:		0.1em;
+	font-size:	0.8em;
+	width:		1em;
+	max-width:	1em;
+}
+#todo-list-block div.container li:last-child,
+#todo-list-block div.container li.ng-move,
+#todo-list-block div.container li.ng-move + li,
+#todo-list-block div.container li.ng-leave{
+	transition:	0.5s ease-in-out all;
+}
+#todo-list-block div.container li.ng-move{
+	top:		5em;
+}
+#todo-list-block div.container li.ng-move + li {
+	top:		-5em;
+	margin-top:	-5em;
+}
+#todo-list-block div.container li.ng-move.ng-move-active,
+#todo-list-block div.container li.ng-move.ng-move-active + li{
+	top:		0;	
+	margin-top:	0;
+}
+#todo-list-block div.container li.ng-leave,
+#todo-list-block div.container li:last-child {
+	height:		5em;
+	opacity:	1;
+}
+#todo-list-block div.container li.ng-leave.ng-leave-active,
+#todo-list-block div.container li.ng-added-element {
+	height:		0;
+	opacity:	0;
+}
+
+/*
+	cursor:	auto, text, grab, move, help, progress, wait, crosshair, not-allowed, n-resize, ne-resize, 
+*/
+
+
+

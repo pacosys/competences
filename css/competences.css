@@ -20,20 +20,32 @@ body {
 	overflow-x:	hidden;
 }
 
-button {
-	border-radius:	0.1em;
+body:not(.beta) .beta {
+	display:	none;
+}
+
+button, .button {
+	border-radius:	0.2em;
 	border:		none;
 	padding:	0.5em 1em;
 	margin:		0 1.5em;
 	background-color:#058;
 	color:		#eee;
 	box-shadow:	0.1em 0.2em rgba(0,160,240,0.5);
+	font-size:	1em;
 }
-button:hover{
+button:hover, .button:hover{
 	background-color:#069;
 }
-button.active{
+button.active, .button.active{
 	
+}
+
+[right]{
+	float:		right;
+}
+[left]{
+	float:		left;
 }
 
 .wrapper {
@@ -67,9 +79,11 @@ body .erase, body *.erase, body div *.erase, body div div *.erase {
 	display: 	block;
 	width:		100%;
 	margin:		0;
+	white-space:	nowrap;
 }
 .list-element:nth-of-type(2n):not([alt]),
 .list-element[alt="true"]{
+/*.list-element:not(.ng-hide):not(.erase):even {*/
 	background-color:	rgba(200,200,200,0.5);
 	background-color:	rgba(0,165,240,0.1);
 }
@@ -82,6 +96,11 @@ div[popup] {
 	width:		100%;
 	height:		100%;
 	background-color:rgba(150,150,150,0.6);
+	opacity:	1;
+	transition:	opacity ease-in-out 0.3s;
+}
+div[popup].ng-hide {
+	opacity:	0;
 }
 div[popup]>div {
 	position:	relative;
@@ -107,94 +126,6 @@ div[popup]>div {
 
 
 
-/*Arrange les input avec un label graphiquement dynamique */
-.super-input {
-	position:	relative;
-	width:		20em;
-	height:		4em;
-	border:		none;
-	margin:		0.2em 0;
-	padding-top:	1.5em;
-}
-.super-input input,
-.super-input select{
-	/*position:	absolute;
-	bottom:		0;
-	left:		0;*/
-	background-color:white;
-	border:		1px solid darkgray;
-	border-width:	0 0 1px 0;
-	margin-left:	0.7em;
-	text-indent:	0.3em;
-	outline:	none;
-}
-.super-input select{
-	min-width:	75%;
-}
-.super-input input:required:invalid{
-	box-shadow:	none; !important;
-}
-.super-input label{
-	position:	absolute;
-	top:		1.5em;
-	left:		1em;
-	transition-property: top, left, bottom, color, opacity, transform, font-size;
-	transition-duration:0.3s;
-	transition-timing-function: ease-in-out;
-}
-.super-input a.erase-input{
-	position:	relative;
-	left:		-2em;
-}
-.super-input input + label {
-	content:	attr(name);
-	color:		darkgray;
-	
-}
-.super-input input:focus + label,
-.super-input input:valid + label,
-.super-input select:valid + label {
-	content:	attr(name);
-	color:		#0af;  /*bleu électrique*/
-	top:		0.5em;
-	left:		0;
-	font-size:	0.8em;
-}
-.super-input input:focus,
-.super-input input:valid,
-.super-input select:valid {
-	border-color:	#0af;
-}
-
-/*   RECHERCHE   */
-.search-input {
-	padding-top:	1em;
-}
-.search-input a.erase-input{
-	display:	inline-block;
-	margin-left:	1em;
-	font-size:	1.7em;
-	cursor:		pointer;
-	background-color:rgba(0,0,0,0);
-	width:		1.5em;
-	max-height:	1em;
-	color:		red;
-	padding:	0 0.3em;
-	text-decoration:none;
-	opacity:	0;
-}
-.search-input input:valid + label + a.erase-input {
-	opacity:	1;
-}
-.search-input label[for="search-input"]:before {
-	content:	"Recherche";
-}
-.search-input label[name]:before {
-	content:	attr(name);
-}
-
-
-
 /*
 [number-of-elements-found]{
 	position:relative;
@@ -206,107 +137,15 @@ div[popup]>div {
 	content:	"( " attr(number-of-elements-found) " )";
 	font-size:	0.8em;
 }
-/
-
-/**********************    Les onglets *********************/
-ul.nav{
-	display:	flex;
-	list-style-type:none;
-	padding-left:	0;
-	margin-bottom:	0;
-}
-ul.nav>li {
-	flex:		1;
-	text-align:	center;
-	border:		1px solid black;
-	border-width:	1px 0 1px 1px;
-	background-color:#eee;
-	background-color:rgba(0,160,255,0.05);
-	border-radius:	5px 5px 0 0;
-}
-ul.nav>li:last-child{
-	border-right:	1px solid black;
-	border-width:	1px 1px 1px 1px;
-}
-ul.nav>li.active {
-	border-bottom-width:0;
-	background-color:white;
-}
-ul.nav>li>a {
-	display:	block;
-	color:		black;
-	width:		100%;
-	height:		100%;
-	text-decoration:none;
-	font-size:	1.2em;
-	height:		3em;
-	padding-top:	0.8em;
-	border:		none;
-	cursor:		pointer;
-}
-ul.nav>li.active>a {
-	/*background-color:rgba(0,160,255,0.7);
-	color:		white;*/
-	font-weight:	bold;
-}
-ul.nav>li:not(.active):hover>a {
-	background-color:rgba(0,160,255,0.05);
-	background-color:rgba(255,255,255,0.5);
-}
-.nav-tabs {
-	display:	flex;
-	border:		1px solid black;
-	border-width:	0 1px 1px 1px;
-}
-.nav-tab {
-	display:	inline-block;
-	position:	relative;
-	margin:		0;
-	background-color:white;
-}
-.nav-tab.active {
-	animation: activate-tab 0.5s;
-	padding:	1em 2em;
-}
-.nav-tab:not(.active) {
-	animation: deactivate-tab 0.5s;
-	max-width:	0;
-	opacity:	0;
-	padding:	0;
-	margin:		0;
-	border-width:	0;
-}
- /* The animation code */
-@keyframes activate-tab {
-	from {
-		max-width:	0;
-		opacity:	0;
-		padding:	0;
-	}
-	to {
-		max-width:	100%;
-		opacity:	1;
-		padding:	1em 2em;
-	}
-}
-@keyframes deactivate-tab {
-	from {
-		max-width:	100%;
-		opacity:	1;
-		padding:	1em 2em;
-	}
-	to {
-		max-width:	0;
-		opacity:	0;
-		padding:	0;
-	}
-}
-
-
+*/
 
 #school-lists .super-input {
 	display:	inline-block;
 	min-width:	35%;
+}
+#school-lists .form-block {
+	min-height:	70%;
+
 }
 #school-lists .buttons-block {
 	display:	flex;
@@ -315,6 +154,18 @@ ul.nav>li:not(.active):hover>a {
 }
 #school-lists .buttons-block>* {
 	flex:		1;
+}
+#school-lists .buttons-block .reset-button {
+	order:		1;
+}
+#school-lists .buttons-block .delete-button {
+	order:		2;
+}
+#school-lists .buttons-block .cancel-button {
+	order:		3;
+}
+#school-lists .buttons-block .close-button {
+	order:		4;
 }
 
 #students-container div.list-element {
@@ -360,73 +211,4 @@ ul.nav>li:not(.active):hover>a {
 .sort-parameters-container .label-reverse-sort.sort-reversed:after {
 	content:	'↑';
 }
-
-div.radio-stack,
-ul.radio-stack{
-	display:	inline-block;
-	width:		auto;
-	height:		auto;
-	list-style:	none;
-	padding-left:	0;
-	margin:		0;
-}
-.radio-stack label {
-	cursor:		pointer;
-}
-div.radio-stack>span [type="radio"],
-ul.radio-stack>li [type="radio"]{
-	margin-left:	1.5em;
-}
-
-
-input[type='radio'] {
-	display:	inline-block;
-	width:		1em;
-	height:		1em;
-	border:		1px solid darkgray;
-	border-radius:	50%;
-	outline:	none;
-	opacity:	0;
-}
-
-input[type='radio']:hover + span:before {
-	box-shadow:0 0 0.25em 0 #0af inset;
-}
-
-input[type='radio'] + span:before {
-	content:	'';
-	display:	inline-block;
-	width:		1em;
-	height:		1em;
-	margin: 	0 0.5em 0 -1.5em;    
-	box-shadow:	0 0 0.2em 0 gray inset;
-	border-radius:	50%;
-	border:		1px solid #0af;
-	cursor:		pointer;
-}
-input[type='radio']:checked + span:before {
-	background:	#0af;
-	box-shadow:	0 0 0.1em 0 #0af inset;
-	background:	radial-gradient( #0af 0%, #0af 40%, #fff 51%, #fff 100%);
-	animation:	activate-radio 1s;
-}
-
- /* The Radio animation code */
-@keyframes activate-radio {
-	from {
-		transform:scale(1);
-	}
-	30%  {
-		transform:scale(1.15);
-	}
-	70%  {
-		transform:scale(0.9);
-	}
-	to {
-		transform:scale(1);
-	}
-}
-
-
-
 
